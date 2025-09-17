@@ -2,34 +2,29 @@ name: iOS CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
 
 jobs:
-  build-and-test:
-    runs-on: macos-latest
-
+  build:
+    runs-on: macos-14
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Select Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
-      - name: Cache derived data
-        uses: actions/cache@v4
-        with:
-          path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-derived-data-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-derived-data-
-
-      - name: Build and test
+      - name: Check runner and tools
         run: |
-          xcodebuild \
-            -scheme ChatAI \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
-            clean test
+          sw_vers
+          xcodebuild -version
+          which brew || echo "brew not found"
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Verify XcodeGen
+        run: xcodegen --version
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build (Simulator)
+        run: xcodebuild -project WebhookChat.xcodeproj -scheme WebhookChat -destination 'platform=iOS Simulator,name=iPhone 15' build
