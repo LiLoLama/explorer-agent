@@ -1,9 +1,9 @@
-name: WebhookChat
+name: ExplorerAgent
 options:
   minimumXcodeGenVersion: 2.41.0
   xcodeVersion: "15.4"
 targets:
-  WebhookChat:
+  ExplorerAgent:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
@@ -12,12 +12,12 @@ targets:
       - path: App/Resources
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.webhookchat
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.exploreragent
         INFOPLIST_FILE: Info.plist
         SWIFT_VERSION: 5.9
     scheme:
-      testTargets: [WebhookChatTests]
-  WebhookChatTests:
+      testTargets: [ExplorerAgentTests]
+  ExplorerAgentTests:
     type: bundle.unit-test
     platform: iOS
     sources: [App/Tests]
