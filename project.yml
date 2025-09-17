@@ -1,0 +1,30 @@
+name: ExplorerAgent
+options:
+  bundleIdPrefix: com.lilolama
+configs:
+  Debug: debug
+  Release: release
+targets:
+  ExplorerAgent:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App/Sources
+      - path: App/Resources
+    settings:
+      base:
+        INFOPLIST_FILE: Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.lilolama.exploreragent
+        SWIFT_VERSION: 5.9
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+schemes:
+  ExplorerAgent:
+    build:
+      targets:
+        ExplorerAgent: all
+    run:
+      config: Debug
+    archive:
+      config: Release
