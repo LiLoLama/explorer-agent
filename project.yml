@@ -1,0 +1,25 @@
+name: WebhookChat
+options:
+  minimumXcodeGenVersion: 2.41.0
+targets:
+  WebhookChat:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App/Sources
+      - path: App/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.webhookchat
+        INFOPLIST_FILE: Info.plist
+        SWIFT_VERSION: 5.9
+    scheme:
+      testTargets: [WebhookChatTests]
+  WebhookChatTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [App/Tests]
+    settings:
+      base:
+        TEST_HOST: ""
