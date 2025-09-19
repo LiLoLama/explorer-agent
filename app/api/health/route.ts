@@ -6,22 +6,35 @@ export const runtime = 'nodejs';
 
 export function GET() {
   const defaultWebhook = getDefaultWebhook();
-  const missing: string[] = [];
+  const defaultsApplied: string[] = [];
 
-  if (!process.env.MAX_REQUEST_BYTES) {
-    missing.push('MAX_REQUEST_BYTES');
-  }
-  if (!process.env.REQUEST_TIMEOUT_MS) {
-    missing.push('REQUEST_TIMEOUT_MS');
-  }
+  const maxRequestBytes = process.env.MAX_REQUEST_BYTES
+    ? Number(process.env.MAX_REQUEST_BYTES)
+    : (() => {
+        defaultsApplied.push('MAX_REQUEST_BYTES');
+        return 5_000_000;
+      })();
+  const requestTimeoutMs = process.env.REQUEST_TIMEOUT_MS
+    ? Number(process.env.REQUEST_TIMEOUT_MS)
+    : (() => {
+        defaultsApplied.push('REQUEST_TIMEOUT_MS');
+        return 30_000;
+      })();
 
-  const status = missing.length === 0 ? 'ok' : 'error';
+  const status = 'ok';
   const message =
-    missing.length === 0
+    defaultsApplied.length === 0
       ? defaultWebhook
         ? `Default webhook configured: ${defaultWebhook}`
         : 'Ready to accept requests.'
-      : `Missing configuration: ${missing.join(', ')}`;
+      : `Using default configuration for: ${defaultsApplied.join(', ')}`;
 
-  return NextResponse.json({ status, message, defaultWebhook });
+  return NextResponse.json({
+    status,
+    message,
+    defaultWebhook,
+    maxRequestBytes,
+    requestTimeoutMs,
+    defaultsApplied,
+  });
 }

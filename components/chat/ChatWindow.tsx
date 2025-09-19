@@ -117,10 +117,9 @@ export function ChatWindow() {
         throw new Error(errorText || 'Proxy request failed');
       }
 
-      if (
-        stream &&
-        response.headers.get('content-type')?.includes('text/event-stream')
-      ) {
+      const contentType = response.headers.get('content-type') ?? '';
+
+      if (stream && contentType.includes('text/event-stream')) {
         setIsStreaming(true);
         assistantMessage = await processStream(
           response,
@@ -128,19 +127,41 @@ export function ChatWindow() {
           assistantMessage,
         );
       } else {
-        const data = await response.json();
-        await updateMessage(conversationId, {
-          ...assistantMessage,
-          content: data.content ?? '',
-          createdAt: data.createdAt ?? new Date().toISOString(),
-          streaming: false,
-        });
-        assistantMessage = {
-          ...assistantMessage,
-          content: data.content ?? '',
-          createdAt: data.createdAt ?? new Date().toISOString(),
-          streaming: false,
-        };
+        const isJsonResponse = /(^|\b)(application\/json|\+json)(\b|$)/i.test(
+          contentType,
+        );
+        if (isJsonResponse) {
+          const data = await response.json();
+          const createdAt = data.createdAt ?? new Date().toISOString();
+          const content = data.content ?? '';
+          await updateMessage(conversationId, {
+            ...assistantMessage,
+            content,
+            createdAt,
+            streaming: false,
+          });
+          assistantMessage = {
+            ...assistantMessage,
+            content,
+            createdAt,
+            streaming: false,
+          };
+        } else {
+          const text = await response.text();
+          const createdAt = new Date().toISOString();
+          await updateMessage(conversationId, {
+            ...assistantMessage,
+            content: text,
+            createdAt,
+            streaming: false,
+          });
+          assistantMessage = {
+            ...assistantMessage,
+            content: text,
+            createdAt,
+            streaming: false,
+          };
+        }
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
