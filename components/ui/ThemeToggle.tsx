@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import { useTheme } from 'next-themes'
-import { Moon, Sun } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useTheme } from 'next-themes';
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function ThemeToggle() {
-  const { setTheme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
-  const isDark = resolvedTheme === 'dark'
+  const isDark = resolvedTheme === 'dark';
   return (
     <button
       aria-label="Theme umschalten"
@@ -21,5 +21,5 @@ export default function ThemeToggle() {
       {isDark ? <Sun size={16} /> : <Moon size={16} />}
       {isDark ? 'Light' : 'Dark'}
     </button>
-  )
+  );
 }

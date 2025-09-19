@@ -156,7 +156,13 @@ export function ConversationList({
       <div className="flex h-full flex-col gap-4 rounded-2xl border border-black/5 bg-white/80 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
         <div className="flex items-center justify-between rounded-2xl border border-black/5 bg-black/5 px-3 py-2 text-sm text-[var(--text)]/80 dark:border-white/10 dark:bg-white/[0.08] dark:text-white/80">
           <div className="flex items-center gap-2">
-            <Image src="/favicon.svg" alt="AITI" width={24} height={24} className="h-6 w-6" />
+            <Image
+              src="/favicon.svg"
+              alt="AITI"
+              width={24}
+              height={24}
+              className="h-6 w-6"
+            />
             <span className="font-medium">AI Training Institute</span>
           </div>
           <ThemeToggle />
@@ -207,107 +213,107 @@ export function ConversationList({
         </div>
         <ScrollArea className="flex-1">
           <div className="space-y-2">
-          {conversations.map((conversation) => {
-            const isActive = conversation.id === activeConversationId;
-            const isEditing = editingId === conversation.id;
-            return (
-              <div
-                key={conversation.id}
-                className={cn(
-                  'group flex items-center justify-between gap-2 rounded-2xl px-3 py-2 text-sm transition',
-                  isActive
-                    ? 'aiti-gradient text-white shadow'
-                    : 'border border-black/10 bg-white/70 text-[var(--text)]/80 hover:border-black/20 hover:text-[var(--text)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white',
-                )}
-              >
-                {isEditing ? (
-                  <form
-                    className="flex flex-1 items-center gap-2"
-                    onSubmit={(event) => {
-                      event.preventDefault();
-                      void submitRename();
-                    }}
-                  >
-                    <Input
-                      value={newTitle}
-                      onChange={(event) => setNewTitle(event.target.value)}
-                      autoFocus
-                      className="h-9 rounded-2xl border-black/10 bg-white/80 text-sm text-[var(--text)] focus-visible:ring-2 dark:border-white/10 dark:bg-white/[0.05] dark:text-white"
-                    />
-                    <Button
-                      type="submit"
-                      size="sm"
-                      className="aiti-gradient rounded-2xl px-3 py-2 text-xs text-white shadow-soft hover:opacity-90"
+            {conversations.map((conversation) => {
+              const isActive = conversation.id === activeConversationId;
+              const isEditing = editingId === conversation.id;
+              return (
+                <div
+                  key={conversation.id}
+                  className={cn(
+                    'group flex items-center justify-between gap-2 rounded-2xl px-3 py-2 text-sm transition',
+                    isActive
+                      ? 'aiti-gradient text-white shadow'
+                      : 'border border-black/10 bg-white/70 text-[var(--text)]/80 hover:border-black/20 hover:text-[var(--text)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white',
+                  )}
+                >
+                  {isEditing ? (
+                    <form
+                      className="flex flex-1 items-center gap-2"
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        void submitRename();
+                      }}
                     >
-                      Speichern
-                    </Button>
-                  </form>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => void handleSelect(conversation)}
-                    className="flex flex-1 items-center gap-2 text-left font-medium text-current outline-none focus-visible:ring-2"
-                  >
-                    <span
-                      className="flex-1 truncate"
-                      title={conversation.title}
-                    >
-                      {conversation.title}
-                    </span>
-                  </button>
-                )}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+                      <Input
+                        value={newTitle}
+                        onChange={(event) => setNewTitle(event.target.value)}
+                        autoFocus
+                        className="h-9 rounded-2xl border-black/10 bg-white/80 text-sm text-[var(--text)] focus-visible:ring-2 dark:border-white/10 dark:bg-white/[0.05] dark:text-white"
+                      />
+                      <Button
+                        type="submit"
+                        size="sm"
+                        className="aiti-gradient rounded-2xl px-3 py-2 text-xs text-white shadow-soft hover:opacity-90"
+                      >
+                        Speichern
+                      </Button>
+                    </form>
+                  ) : (
                     <button
                       type="button"
-                      aria-label="Conversation options"
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent text-current/80 transition hover:text-current focus:outline-none focus-visible:ring-2"
+                      onClick={() => void handleSelect(conversation)}
+                      className="flex flex-1 items-center gap-2 text-left font-medium text-current outline-none focus-visible:ring-2"
                     >
-                      <MoreHorizontal className="h-4 w-4" />
+                      <span
+                        className="flex-1 truncate"
+                        title={conversation.title}
+                      >
+                        {conversation.title}
+                      </span>
                     </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onSelect={() => startRename(conversation)}
-                    >
-                      Rename
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onSelect={() => void handleDuplicate(conversation)}
-                    >
-                      Duplicate
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-destructive focus:text-destructive"
-                      onSelect={() => void handleDelete(conversation)}
-                    >
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            );
-          })}
-        </div>
-      </ScrollArea>
-      <CommandDialog open={commandOpen} onOpenChange={setCommandOpen}>
-        <CommandInput placeholder="Search conversations" />
-        <CommandList>
-          <CommandEmpty>No conversations found.</CommandEmpty>
-          <CommandGroup heading="Conversations">
-            {conversations.map((conversation) => (
-              <CommandItem
-                key={conversation.id}
-                value={conversation.title}
-                onSelect={() => void handleSelect(conversation)}
-              >
-                {conversation.title}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        aria-label="Conversation options"
+                        className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent text-current/80 transition hover:text-current focus:outline-none focus-visible:ring-2"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onSelect={() => startRename(conversation)}
+                      >
+                        Rename
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onSelect={() => void handleDuplicate(conversation)}
+                      >
+                        Duplicate
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-destructive focus:text-destructive"
+                        onSelect={() => void handleDelete(conversation)}
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
+        <CommandDialog open={commandOpen} onOpenChange={setCommandOpen}>
+          <CommandInput placeholder="Search conversations" />
+          <CommandList>
+            <CommandEmpty>No conversations found.</CommandEmpty>
+            <CommandGroup heading="Conversations">
+              {conversations.map((conversation) => (
+                <CommandItem
+                  key={conversation.id}
+                  value={conversation.title}
+                  onSelect={() => void handleSelect(conversation)}
+                >
+                  {conversation.title}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </CommandDialog>
+      </div>
     </div>
-  </div>
   );
 }

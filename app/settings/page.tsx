@@ -37,7 +37,9 @@ export default function SettingsPage() {
   );
   const [status, setStatus] = React.useState<'ok' | 'error'>('ok');
   const [message, setMessage] = React.useState<string | undefined>();
-  const [defaultWebhook, setDefaultWebhook] = React.useState<string | undefined>();
+  const [defaultWebhook, setDefaultWebhook] = React.useState<
+    string | undefined
+  >();
 
   React.useEffect(() => {
     fetch('/api/health')
@@ -139,7 +141,8 @@ export default function SettingsPage() {
           ) : null}
           {defaultWebhook ? (
             <p className="text-xs text-[var(--muted)]">
-              Default webhook: <span className="font-medium">{defaultWebhook}</span>
+              Default webhook:{' '}
+              <span className="font-medium">{defaultWebhook}</span>
             </p>
           ) : null}
         </div>
