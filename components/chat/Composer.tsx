@@ -153,8 +153,8 @@ export function Composer({
   );
 
   return (
-    <div className="border-t border-white/5 bg-transparent p-4 dark:border-white/10">
-      <div className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-pill focus-within:ring-2 focus-within:[--tw-ring-color:var(--ring)] dark:border-white/10 dark:bg-white/[0.04]">
+    <div className="border-t border-white/30 bg-white/20 px-6 py-6 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
+      <div className="glass-panel flex flex-col gap-4 rounded-[32px] p-6">
         <Textarea
           value={message}
           onChange={(event) => setMessage(event.target.value)}
@@ -162,9 +162,9 @@ export function Composer({
           placeholder="Type your message..."
           aria-label="Message"
           disabled={Boolean(disabled || isStreaming)}
-          className="min-h-[120px] rounded-2xl border-none bg-transparent text-[var(--text)] placeholder:text-[var(--muted)] focus-visible:ring-0"
+          className="min-h-[140px] border-none bg-transparent text-[var(--text)] placeholder:text-[var(--muted)] focus-visible:ring-0 dark:text-white"
         />
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Button
               type="button"
@@ -197,9 +197,10 @@ export function Composer({
                 </Button>
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="ghost"
                   onClick={resetAudio}
                   aria-label="Discard recording"
+                  className="rounded-full px-4"
                 >
                   <Trash2 className="mr-2 h-4 w-4" /> Discard
                 </Button>
@@ -221,6 +222,7 @@ export function Composer({
               type="button"
               onClick={() => void handleSend()}
               disabled={isSendDisabled}
+              className="rounded-full px-6"
             >
               {disabled ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

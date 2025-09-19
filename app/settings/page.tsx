@@ -105,22 +105,25 @@ export default function SettingsPage() {
   }, [webhookUrl]);
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Settings</h1>
-          <p className="text-muted-foreground">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-10 md:px-0">
+      <div className="flex flex-col gap-4 text-[var(--text)] dark:text-white md:flex-row md:items-center md:justify-between">
+        <div className="space-y-2">
+          <span className="text-xs font-medium uppercase tracking-[0.4em] text-[var(--muted)] dark:text-white/60">
+            Einstellungen
+          </span>
+          <h1 className="text-3xl font-semibold">Explorer Agent</h1>
+          <p className="text-sm text-[var(--muted)] dark:text-white/70">
             Configure how Explorer Agent connects to your webhook.
           </p>
         </div>
         <Link
           href="/"
-          className="text-sm text-primary underline-offset-4 hover:underline"
+          className="glass-button inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-medium text-[var(--text)] transition hover:opacity-95 dark:text-white"
         >
           Back to chat
         </Link>
       </div>
-      <div className="space-y-4 rounded-2xl border border-black/10 bg-white/80 p-6 shadow-soft dark:border-white/10 dark:bg-white/[0.04]">
+      <div className="glass-panel space-y-6 rounded-[32px] p-6">
         <div className="space-y-2">
           <Label htmlFor="webhook">Webhook URL</Label>
           <Input
@@ -161,10 +164,17 @@ export default function SettingsPage() {
           />
         </div>
       </div>
-      <div className="space-y-4 rounded-2xl border border-black/10 bg-white/80 p-6 shadow-soft dark:border-white/10 dark:bg-white/[0.04]">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Extra headers</h2>
-          <Button type="button" variant="outline" onClick={handleAddHeader}>
+      <div className="glass-panel space-y-6 rounded-[32px] p-6">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <h2 className="text-lg font-semibold text-[var(--text)] dark:text-white">
+            Extra headers
+          </h2>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleAddHeader}
+            className="rounded-full px-5"
+          >
             Add header
           </Button>
         </div>
@@ -177,7 +187,7 @@ export default function SettingsPage() {
           {headers.map((header, index) => (
             <div
               key={index}
-              className="flex flex-col gap-2 rounded-2xl border border-black/10 bg-white/70 p-3 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-white/[0.05]"
+              className="flex flex-col gap-2 rounded-[28px] border border-white/60 bg-white/50 p-4 shadow-soft backdrop-blur sm:flex-row sm:items-center dark:border-white/10 dark:bg-white/[0.05]"
             >
               <Input
                 value={header.key}
@@ -199,18 +209,25 @@ export default function SettingsPage() {
                 type="button"
                 variant="ghost"
                 onClick={() => handleRemoveHeader(index)}
+                className="rounded-full px-4"
               >
                 Remove
               </Button>
             </div>
           ))}
         </div>
-        <Button type="button" onClick={handleSaveHeaders}>
+        <Button
+          type="button"
+          onClick={handleSaveHeaders}
+          className="rounded-full px-6"
+        >
           Save headers
         </Button>
       </div>
-      <div className="rounded-2xl border border-black/10 bg-white/80 p-6 text-sm shadow-soft dark:border-white/10 dark:bg-white/[0.04]">
-        <h2 className="mb-2 text-lg font-semibold">System status</h2>
+      <div className="glass-panel rounded-[32px] p-6 text-sm">
+        <h2 className="mb-2 text-lg font-semibold text-[var(--text)] dark:text-white">
+          System status
+        </h2>
         <p className="text-muted-foreground">
           Status:{' '}
           <span

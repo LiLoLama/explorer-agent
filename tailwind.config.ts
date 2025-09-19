@@ -81,8 +81,8 @@ const config: Config = {
         sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
-        soft: '0 2px 20px rgba(0,0,0,0.25)',
-        pill: '0 1px 12px rgba(0,0,0,0.35)',
+        soft: '0 22px 45px -28px rgba(15, 23, 42, 0.45)',
+        pill: '0 14px 36px -24px rgba(15, 23, 42, 0.4)',
       },
       keyframes: {
         'accordion-down': {

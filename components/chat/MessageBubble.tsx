@@ -46,18 +46,18 @@ export function MessageBubble({ message }: MessageBubbleProps) {
       >
         <div
           className={cn(
-            'rounded-2xl p-4 shadow-sm transition',
+            'rounded-3xl p-5 shadow-soft transition-all duration-300',
             isAssistant
-              ? 'border border-white/10 bg-white/[0.03]'
-              : 'aiti-gradient text-white shadow',
+              ? 'border border-white/60 bg-white/60 text-[var(--text)] shadow-[0_28px_60px_-40px_rgba(15,23,42,0.4)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:text-white'
+              : 'bg-gradient-to-r from-[#0A84FF] via-[#64D2FF] to-[#007AFF] text-white shadow-[0_30px_80px_-45px_rgba(10,132,255,0.85)]',
           )}
         >
-          <div className="flex items-center justify-between text-xs uppercase tracking-wide">
+          <div className="flex items-center justify-between text-[0.7rem] font-semibold uppercase tracking-[0.4em]">
             <div
               className={cn(
                 'font-semibold',
                 isAssistant
-                  ? 'text-[var(--text)]/70 dark:text-white/70'
+                  ? 'text-[var(--text)]/60 dark:text-white/70'
                   : 'text-white/80',
               )}
             >
@@ -66,7 +66,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
             <div className="flex items-center gap-2">
               <span
                 className={cn(
-                  'text-xs',
+                  'text-xs font-medium',
                   isAssistant
                     ? 'text-[var(--muted)] dark:text-white/60'
                     : 'text-white/80',
@@ -79,17 +79,22 @@ export function MessageBubble({ message }: MessageBubbleProps) {
                 onClick={() => void handleCopy()}
                 aria-label="Copy message"
                 className={cn(
-                  'flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-current/70 transition hover:opacity-80 focus:outline-none focus-visible:ring-2',
+                  'flex h-8 w-8 items-center justify-center rounded-full border text-current/70 transition hover:opacity-85 focus:outline-none focus-visible:ring-2',
                   isAssistant
-                    ? 'border-white/10 text-[var(--text)]/60 dark:text-white/70'
-                    : 'border-white/20 text-white/80',
+                    ? 'border-white/50 bg-white/30 text-[var(--text)]/60 backdrop-blur-md dark:border-white/15 dark:bg-white/[0.08] dark:text-white/80'
+                    : 'border-white/40 bg-white/30 text-white/80 backdrop-blur-md',
                 )}
               >
                 <ClipboardCopy className="h-4 w-4" />
               </button>
             </div>
           </div>
-          <div className="prose prose-sm mt-3 max-w-none dark:prose-invert">
+          <div
+            className={cn(
+              'prose prose-sm mt-4 max-w-none transition-colors dark:prose-invert',
+              isAssistant ? 'text-[var(--text)] dark:text-white' : 'text-white',
+            )}
+          >
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {message.content}
             </ReactMarkdown>
