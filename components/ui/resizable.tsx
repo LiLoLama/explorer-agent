@@ -19,7 +19,7 @@ const ResizablePanel = Panel;
 const ResizableHandle = ({ className, ...props }: PanelResizeHandleProps) => (
   <PanelResizeHandle
     className={cn(
-      'w-1 cursor-col-resize bg-border transition-colors hover:bg-primary',
+      'w-px cursor-col-resize bg-white/40 transition-colors hover:bg-[rgba(10,132,255,0.6)] dark:bg-white/10',
       className,
     )}
     {...props}

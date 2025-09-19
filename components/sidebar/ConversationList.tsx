@@ -152,9 +152,9 @@ export function ConversationList({
   };
 
   return (
-    <div className="h-full p-4">
-      <div className="flex h-full flex-col gap-4 rounded-2xl border border-black/5 bg-white/80 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
-        <div className="flex items-center justify-between rounded-2xl border border-black/5 bg-black/5 px-3 py-2 text-sm text-[var(--text)]/80 dark:border-white/10 dark:bg-white/[0.08] dark:text-white/80">
+    <div className="flex h-full flex-col p-6">
+      <div className="glass-panel flex h-full flex-col gap-6 rounded-[32px] p-6">
+        <div className="flex items-center justify-between rounded-full border border-white/60 bg-white/50 px-4 py-2 text-sm text-[var(--text)]/80 shadow-soft backdrop-blur-lg dark:border-white/10 dark:bg-white/[0.07] dark:text-white/75">
           <div className="flex items-center gap-2">
             <Image
               src="/favicon.svg"
@@ -167,21 +167,21 @@ export function ConversationList({
           </div>
           <ThemeToggle />
         </div>
-        <div className="flex flex-col gap-3">
-          <button
+        <div className="flex flex-col gap-4">
+          <Button
             type="button"
             onClick={() => void handleCreate()}
             aria-label="New conversation"
-            className="aiti-gradient flex items-center justify-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium text-white shadow-soft transition hover:opacity-90 focus:outline-none focus-visible:ring-2"
+            className="w-full justify-center rounded-[28px]"
           >
             <Plus className="h-4 w-4" /> Neu
-          </button>
+          </Button>
           <div className="flex items-center justify-between gap-2">
             <button
               type="button"
               onClick={() => void handleExport()}
               aria-label="Export conversations"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:border-white/10 dark:text-white/70 dark:hover:text-white"
+              className="glass-button flex h-11 w-11 items-center justify-center rounded-full text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:text-white/70 dark:hover:text-white"
             >
               <Download className="h-4 w-4" />
             </button>
@@ -189,7 +189,7 @@ export function ConversationList({
               type="button"
               onClick={() => fileInputRef.current?.click()}
               aria-label="Import conversations"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:border-white/10 dark:text-white/70 dark:hover:text-white"
+              className="glass-button flex h-11 w-11 items-center justify-center rounded-full text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:text-white/70 dark:hover:text-white"
             >
               <Upload className="h-4 w-4" />
             </button>
@@ -197,7 +197,7 @@ export function ConversationList({
               type="button"
               onClick={() => setCommandOpen(true)}
               aria-label="Search conversations"
-              className="surface flex flex-1 items-center gap-2 rounded-2xl border border-black/10 px-3 py-2 text-sm text-[var(--text)]/70 transition hover:border-black/20 hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:border-white/10 dark:text-white/70 dark:hover:border-white/20 dark:hover:text-white"
+              className="glass-button flex flex-1 items-center gap-2 rounded-full px-4 py-2 text-sm text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:text-white/70 dark:hover:text-white"
             >
               <Search className="h-4 w-4" /> Suche (Ctrl/Cmd + K)
             </button>
@@ -212,7 +212,7 @@ export function ConversationList({
           />
         </div>
         <ScrollArea className="flex-1">
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {conversations.map((conversation) => {
               const isActive = conversation.id === activeConversationId;
               const isEditing = editingId === conversation.id;
@@ -220,10 +220,10 @@ export function ConversationList({
                 <div
                   key={conversation.id}
                   className={cn(
-                    'group flex items-center justify-between gap-2 rounded-2xl px-3 py-2 text-sm transition',
+                    'group flex items-center justify-between gap-2 rounded-[26px] px-4 py-3 text-sm transition-all duration-300',
                     isActive
-                      ? 'aiti-gradient text-white shadow'
-                      : 'border border-black/10 bg-white/70 text-[var(--text)]/80 hover:border-black/20 hover:text-[var(--text)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white',
+                      ? 'bg-gradient-to-r from-[#0A84FF] via-[#64D2FF] to-[#007AFF] text-white shadow-[0_28px_80px_-50px_rgba(10,132,255,0.75)]'
+                      : 'border border-white/60 bg-white/45 text-[var(--text)]/80 backdrop-blur hover:bg-white/65 hover:text-[var(--text)] dark:border-white/10 dark:bg-white/[0.05] dark:text-white/70 dark:hover:bg-white/[0.1] dark:hover:text-white',
                   )}
                 >
                   {isEditing ? (
@@ -238,12 +238,12 @@ export function ConversationList({
                         value={newTitle}
                         onChange={(event) => setNewTitle(event.target.value)}
                         autoFocus
-                        className="h-9 rounded-2xl border-black/10 bg-white/80 text-sm text-[var(--text)] focus-visible:ring-2 dark:border-white/10 dark:bg-white/[0.05] dark:text-white"
+                        className="h-10"
                       />
                       <Button
                         type="submit"
                         size="sm"
-                        className="aiti-gradient rounded-2xl px-3 py-2 text-xs text-white shadow-soft hover:opacity-90"
+                        className="rounded-full px-4"
                       >
                         Speichern
                       </Button>
@@ -267,7 +267,7 @@ export function ConversationList({
                       <button
                         type="button"
                         aria-label="Conversation options"
-                        className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent text-current/80 transition hover:text-current focus:outline-none focus-visible:ring-2"
+                        className="glass-button flex h-9 w-9 items-center justify-center rounded-full border border-white/40 text-current/80 transition hover:text-current focus:outline-none focus-visible:ring-2 dark:border-white/15"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </button>

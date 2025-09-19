@@ -7,17 +7,18 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:[--tw-ring-color:var(--ring)] disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:[--tw-ring-color:var(--ring)] disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'aiti-gradient text-white shadow-soft hover:opacity-95',
+        default:
+          'aiti-gradient text-white shadow-soft backdrop-blur-md transition-shadow hover:shadow-[0_28px_60px_-32px_rgba(10,132,255,0.65)] focus-visible:[--tw-ring-color:rgba(10,132,255,0.45)]',
         secondary:
-          'surface border border-black/10 text-[var(--text)]/80 shadow-soft hover:border-black/20 hover:text-[var(--text)] dark:border-white/10 dark:hover:border-white/20 dark:text-white/80',
+          'glass-button text-[var(--text)]/80 shadow-soft hover:text-[var(--text)] dark:text-white/80 dark:hover:text-white',
         outline:
-          'border border-black/10 bg-transparent text-[var(--text)]/80 shadow-sm hover:border-black/20 hover:bg-black/5 hover:text-[var(--text)] dark:border-white/20 dark:bg-transparent dark:text-white/80 dark:hover:bg-white/[0.08] dark:hover:text-white',
+          'border border-white/60 bg-white/10 px-5 text-[var(--text)]/80 shadow-soft backdrop-blur-md hover:bg-white/30 hover:text-[var(--text)] focus-visible:[--tw-ring-color:rgba(10,132,255,0.35)] dark:border-white/15 dark:bg-white/[0.04] dark:text-white/80 dark:hover:bg-white/[0.1] dark:hover:text-white',
         ghost:
-          'text-[var(--text)]/70 hover:bg-black/5 hover:text-[var(--text)] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white',
+          'text-[var(--text)]/70 hover:bg-white/40 hover:text-[var(--text)] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white',
         destructive:
           'bg-accent-red text-white shadow-soft hover:brightness-110 focus-visible:[--tw-ring-color:rgba(255,69,58,0.6)]',
         link: 'text-[var(--text)] underline-offset-4 hover:underline dark:text-white',
