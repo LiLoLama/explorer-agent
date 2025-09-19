@@ -259,8 +259,8 @@ export function ChatWindow() {
 
   return (
     <div className="flex h-full flex-1 flex-col">
-      <ScrollArea className="flex-1 p-4">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+      <ScrollArea className="flex-1 px-6 py-6">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
           {activeMessages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))}

@@ -149,80 +149,83 @@ export function Composer({
   );
 
   return (
-    <div className="space-y-2 border-t bg-background p-4">
-      <Textarea
-        value={message}
-        onChange={(event) => setMessage(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Type your message..."
-        aria-label="Message"
-        disabled={Boolean(disabled || isStreaming)}
-      />
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Button
-            type="button"
-            variant={recording ? 'destructive' : 'outline'}
-            onClick={recording ? stopRecording : startRecording}
-            disabled={!canRecord || Boolean(disabled || isStreaming)}
-            aria-label={recording ? 'Stop recording' : 'Start recording'}
-          >
-            {recording ? (
-              <MicOff className="mr-2 h-4 w-4" />
-            ) : (
-              <Mic className="mr-2 h-4 w-4" />
-            )}
-            {recording ? 'Stop' : 'Record'}
-          </Button>
-          {audioBlob ? (
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={togglePlayback}
-                aria-label="Play recording"
-              >
-                {isPlaying ? (
-                  <Pause className="mr-2 h-4 w-4" />
-                ) : (
-                  <Play className="mr-2 h-4 w-4" />
-                )}{' '}
-                {isPlaying ? 'Pause' : 'Listen'}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={resetAudio}
-                aria-label="Discard recording"
-              >
-                <Trash2 className="mr-2 h-4 w-4" /> Discard
-              </Button>
-            </div>
-          ) : null}
-        </div>
-        <div className="flex items-center gap-2">
-          {isStreaming ? (
+    <div className="border-t border-white/5 bg-transparent p-4 dark:border-white/10">
+      <div className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-pill focus-within:ring-2 focus-within:[--tw-ring-color:var(--ring)] dark:border-white/10 dark:bg-white/[0.04]">
+        <Textarea
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message..."
+          aria-label="Message"
+          disabled={Boolean(disabled || isStreaming)}
+          className="min-h-[120px] rounded-2xl border-none bg-transparent text-[var(--text)] placeholder:text-[var(--muted)] focus-visible:ring-0"
+        />
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
             <Button
               type="button"
-              variant="destructive"
-              onClick={onStop}
-              aria-label="Stop response"
+              variant={recording ? 'destructive' : 'outline'}
+              onClick={recording ? stopRecording : startRecording}
+              disabled={!canRecord || Boolean(disabled || isStreaming)}
+              aria-label={recording ? 'Stop recording' : 'Start recording'}
             >
-              <StopCircle className="mr-2 h-4 w-4" /> Stop
+              {recording ? (
+                <MicOff className="mr-2 h-4 w-4" />
+              ) : (
+                <Mic className="mr-2 h-4 w-4" />
+              )}
+              {recording ? 'Stop' : 'Record'}
             </Button>
-          ) : null}
-          <Button
-            type="button"
-            onClick={() => void handleSend()}
-            disabled={isSendDisabled}
-          >
-            {disabled ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="mr-2 h-4 w-4" />
-            )}{' '}
-            Send
-          </Button>
+            {audioBlob ? (
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={togglePlayback}
+                  aria-label="Play recording"
+                >
+                  {isPlaying ? (
+                    <Pause className="mr-2 h-4 w-4" />
+                  ) : (
+                    <Play className="mr-2 h-4 w-4" />
+                  )}{' '}
+                  {isPlaying ? 'Pause' : 'Listen'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={resetAudio}
+                  aria-label="Discard recording"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" /> Discard
+                </Button>
+              </div>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-2">
+            {isStreaming ? (
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={onStop}
+                aria-label="Stop response"
+              >
+                <StopCircle className="mr-2 h-4 w-4" /> Stop
+              </Button>
+            ) : null}
+            <Button
+              type="button"
+              onClick={() => void handleSend()}
+              disabled={isSendDisabled}
+            >
+              {disabled ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="mr-2 h-4 w-4" />
+              )}{' '}
+              Send
+            </Button>
+          </div>
         </div>
       </div>
     </div>

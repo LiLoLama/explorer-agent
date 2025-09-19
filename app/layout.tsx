@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
 import './globals.css';
+import { ThemeProvider } from 'next-themes';
+import type { Metadata } from 'next';
 
-import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_APP_NAME || 'Explorer Agent',
-  description: 'Chat UI for webhook-driven agents',
+  title: 'Explorer Agent',
+  description: 'AI Training Institute – We apply AI',
 };
 
 export default function RootLayout({
@@ -15,12 +16,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn('min-h-screen bg-background font-sans text-foreground')}
-      >
-        <div className="flex min-h-screen flex-col">{children}</div>
-        <Toaster />
+    <html lang="de" suppressHydrationWarning>
+      <body className={cn('min-h-screen font-sans antialiased')}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex min-h-screen flex-col bg-[var(--bg)] text-[var(--text)]">
+            {children}
+          </div>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

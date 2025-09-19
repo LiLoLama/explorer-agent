@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
     targetUrl = assertAllowedUrl(payload.userWebhook || getDefaultWebhook());
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Webhook not allowed' },
+      { error: error instanceof Error ? error.message : 'Invalid webhook URL' },
       { status: 400 },
     );
   }

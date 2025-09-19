@@ -17,9 +17,9 @@ interface HeaderRow {
 }
 
 interface HealthResponse {
-  allowlist: string[];
   status: 'ok' | 'error';
   message?: string;
+  defaultWebhook?: string;
 }
 
 export default function SettingsPage() {
@@ -35,17 +35,19 @@ export default function SettingsPage() {
   const [headers, setHeaders] = React.useState<HeaderRow[]>(() =>
     Object.entries(extraHeaders ?? {}).map(([key, value]) => ({ key, value })),
   );
-  const [allowlist, setAllowlist] = React.useState<string[]>([]);
   const [status, setStatus] = React.useState<'ok' | 'error'>('ok');
   const [message, setMessage] = React.useState<string | undefined>();
+  const [defaultWebhook, setDefaultWebhook] = React.useState<
+    string | undefined
+  >();
 
   React.useEffect(() => {
     fetch('/api/health')
       .then((response) => response.json())
       .then((data: HealthResponse) => {
-        setAllowlist(data.allowlist);
         setStatus(data.status);
         setMessage(data.message);
+        setDefaultWebhook(data.defaultWebhook);
       })
       .catch(() => {
         setStatus('error');
@@ -88,18 +90,19 @@ export default function SettingsPage() {
     setWebhookUrl(event.target.value);
   };
 
-  const isAllowed = React.useMemo(() => {
+  const isValidWebhook = React.useMemo(() => {
     if (!webhookUrl) {
       return true;
     }
     try {
-      const host = new URL(webhookUrl).host.toLowerCase();
-      return allowlist.includes(host);
+      // Ensure the URL parses correctly; we allow any valid host.
+      new URL(webhookUrl);
+      return true;
     } catch (error) {
       console.warn('Invalid webhook URL provided', error);
       return false;
     }
-  }, [allowlist, webhookUrl]);
+  }, [webhookUrl]);
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
@@ -117,7 +120,7 @@ export default function SettingsPage() {
           Back to chat
         </Link>
       </div>
-      <div className="space-y-4 rounded-lg border p-6">
+      <div className="space-y-4 rounded-2xl border border-black/10 bg-white/80 p-6 shadow-soft dark:border-white/10 dark:bg-white/[0.04]">
         <div className="space-y-2">
           <Label htmlFor="webhook">Webhook URL</Label>
           <Input
@@ -125,15 +128,21 @@ export default function SettingsPage() {
             value={webhookUrl}
             onChange={handleWebhookChange}
             placeholder="https://hooks.n8n.cloud/..."
-            aria-invalid={!isAllowed}
+            aria-invalid={!isValidWebhook}
           />
-          <p className="text-xs text-muted-foreground">
-            Allowed domains:{' '}
-            {allowlist.length > 0 ? allowlist.join(', ') : 'loading...'}
+          <p className="text-xs text-[var(--muted)]">
+            Provide any valid HTTPS endpoint. The proxy will validate the URL
+            before forwarding requests.
           </p>
-          {!isAllowed ? (
+          {!isValidWebhook ? (
             <p className="text-xs text-destructive">
-              Webhook must match an allowed domain.
+              Enter a valid webhook URL (including protocol).
+            </p>
+          ) : null}
+          {defaultWebhook ? (
+            <p className="text-xs text-[var(--muted)]">
+              Default webhook:{' '}
+              <span className="font-medium">{defaultWebhook}</span>
             </p>
           ) : null}
         </div>
@@ -152,7 +161,7 @@ export default function SettingsPage() {
           />
         </div>
       </div>
-      <div className="space-y-4 rounded-lg border p-6">
+      <div className="space-y-4 rounded-2xl border border-black/10 bg-white/80 p-6 shadow-soft dark:border-white/10 dark:bg-white/[0.04]">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Extra headers</h2>
           <Button type="button" variant="outline" onClick={handleAddHeader}>
@@ -168,7 +177,7 @@ export default function SettingsPage() {
           {headers.map((header, index) => (
             <div
               key={index}
-              className="flex flex-col gap-2 rounded-md border p-3 sm:flex-row sm:items-center"
+              className="flex flex-col gap-2 rounded-2xl border border-black/10 bg-white/70 p-3 shadow-sm sm:flex-row sm:items-center dark:border-white/10 dark:bg-white/[0.05]"
             >
               <Input
                 value={header.key}
@@ -200,7 +209,7 @@ export default function SettingsPage() {
           Save headers
         </Button>
       </div>
-      <div className="rounded-lg border p-6 text-sm">
+      <div className="rounded-2xl border border-black/10 bg-white/80 p-6 text-sm shadow-soft dark:border-white/10 dark:bg-white/[0.04]">
         <h2 className="mb-2 text-lg font-semibold">System status</h2>
         <p className="text-muted-foreground">
           Status:{' '}

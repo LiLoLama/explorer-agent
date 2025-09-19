@@ -1,9 +1,3 @@
-const RAW_ALLOWLIST = process.env.WEBHOOK_ALLOWLIST ?? '';
-
-const ALLOWLIST = RAW_ALLOWLIST.split(',')
-  .map((entry) => entry.trim().toLowerCase())
-  .filter(Boolean);
-
 const SAFE_HEADER_SET = new Set([
   'x-api-key',
   'x-workflow-id',
@@ -20,10 +14,6 @@ const BLOCKED_HEADERS = new Set([
   'connection',
 ]);
 
-export function getAllowlist(): string[] {
-  return [...ALLOWLIST];
-}
-
 export function getDefaultWebhook(): string | undefined {
   return process.env.N8N_DEFAULT_WEBHOOK_URL?.trim();
 }
@@ -35,27 +25,16 @@ export function sanitizeInput(value: unknown): string {
   return value.replace(/[^\t\n\r\x20-\x7E]/g, '').trim();
 }
 
-export function isUrlAllowed(url: string | undefined | null): boolean {
-  if (!url) {
-    return false;
-  }
-  try {
-    const parsed = new URL(url);
-    return ALLOWLIST.includes(parsed.host.toLowerCase());
-  } catch (error) {
-    console.warn('Invalid URL when checking allowlist', error);
-    return false;
-  }
-}
-
 export function assertAllowedUrl(url: string | undefined | null): string {
   if (!url) {
     throw new Error('Webhook URL is required');
   }
-  if (!isUrlAllowed(url)) {
-    throw new Error('Webhook URL is not in the allowlist');
+  try {
+    const parsed = new URL(url);
+    return parsed.toString();
+  } catch {
+    throw new Error('Invalid webhook URL');
   }
-  return url;
 }
 
 export function filterExtraHeaders(

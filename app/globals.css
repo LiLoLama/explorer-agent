@@ -3,44 +3,97 @@
 @tailwind utilities;
 
 :root {
-  --background: 210 40% 98%;
-  --foreground: 222.2 47.4% 11.2%;
+  /* Light (nur wenn .light auf <html>) */
+  --bg: #ffffff;
+  --surface: #f6f7f8;
+  --text: #0b0c0e;
+  --muted: #6b7177;
+  --ring: rgba(10, 132, 255, 0.35);
+  --grad-from: #f7e433; /* aiti-gold-200 */
+  --grad-to: #ecaf3b; /* aiti-gold-500 */
+
+  --background: 0 0% 100%;
+  --foreground: 220 14% 6%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
+  --card-foreground: 220 14% 6%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 47.4% 11.2%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 100% 50%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
-  --radius: 0.75rem;
+  --popover-foreground: 220 14% 6%;
+  --primary: 40 92% 56%;
+  --primary-foreground: 220 14% 12%;
+  --secondary: 210 25% 92%;
+  --secondary-foreground: 220 18% 18%;
+  --muted-foreground: 215 15% 46%;
+  --accent: 216 100% 64%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 210 25% 90%;
+  --input: 210 25% 90%;
+  --ring-hsl: 216 100% 64%;
+  --radius: 1rem;
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #121418; /* neu-900 */
+  --surface: #16181c; /* dunkle Fläche */
+  --text: #f7f8fa;
+  --muted: #9aa1a9;
+  --ring: rgba(10, 132, 255, 0.5);
+  --grad-from: #f5cd39; /* aiti-gold-300 */
+  --grad-to: #c59c3e; /* aiti-gold-600 */
+
+  --background: 220 18% 8%;
+  --foreground: 215 20% 96%;
+  --card: 220 20% 11%;
+  --card-foreground: 215 20% 96%;
+  --popover: 220 20% 11%;
+  --popover-foreground: 215 20% 96%;
+  --primary: 40 92% 56%;
+  --primary-foreground: 216 28% 12%;
+  --secondary: 220 19% 20%;
+  --secondary-foreground: 215 20% 92%;
+  --muted-foreground: 214 18% 74%;
+  --accent: 216 100% 64%;
+  --accent-foreground: 215 20% 96%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 215 20% 96%;
+  --border: 215 19% 24%;
+  --input: 215 19% 24%;
+  --ring-hsl: 216 100% 64%;
+
+  color-scheme: dark;
 }
 
 * {
   @apply border-border;
 }
 
+html,
 body {
-  @apply bg-background text-foreground font-sans antialiased;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
 }
 
-html, body {
-  height: 100%;
+body {
+  @apply font-sans antialiased;
 }
 
 #__next {
-  height: 100%;
+  min-height: 100%;
 }
 
-a {
-  @apply text-primary underline-offset-4 hover:underline;
+.aiti-gradient {
+  background: linear-gradient(135deg, var(--grad-from), var(--grad-to));
+}
+
+.surface {
+  background: var(--surface);
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2;
+  box-shadow: 0 0 0 2px var(--ring);
 }

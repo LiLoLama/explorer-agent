@@ -1,17 +1,13 @@
 import { NextResponse } from 'next/server';
 
-import { getAllowlist, getDefaultWebhook } from '@/lib/proxy';
+import { getDefaultWebhook } from '@/lib/proxy';
 
 export const runtime = 'nodejs';
 
 export function GET() {
-  const allowlist = getAllowlist();
   const defaultWebhook = getDefaultWebhook();
   const missing: string[] = [];
 
-  if (allowlist.length === 0) {
-    missing.push('WEBHOOK_ALLOWLIST');
-  }
   if (!process.env.MAX_REQUEST_BYTES) {
     missing.push('MAX_REQUEST_BYTES');
   }
@@ -27,5 +23,5 @@ export function GET() {
         : 'Ready to accept requests.'
       : `Missing configuration: ${missing.join(', ')}`;
 
-  return NextResponse.json({ status, allowlist, message, defaultWebhook });
+  return NextResponse.json({ status, message, defaultWebhook });
 }
