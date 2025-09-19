@@ -7,7 +7,7 @@ import {
   getDefaultWebhook,
   sanitizeInput,
 } from '@/lib/proxy';
-import { formatSSE, passthroughSSE } from '@/lib/sse';
+import { passthroughSSE } from '@/lib/sse';
 import type { ChatRequestPayload } from '@/lib/types';
 
 const RATE_LIMIT = 60;
@@ -229,12 +229,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (
-      payload.stream &&
-      upstreamResponse.headers
-        .get('content-type')
-        ?.includes('text/event-stream')
-    ) {
+    const upstreamContentType =
+      upstreamResponse.headers.get('content-type') ?? '';
+
+    if (payload.stream && upstreamContentType.includes('text/event-stream')) {
       return passthroughSSE(upstreamResponse);
     }
 
@@ -246,28 +244,24 @@ export async function POST(request: NextRequest) {
       );
     }
     try {
-      const json = JSON.parse(text);
-      return NextResponse.json(json, { status: upstreamResponse.status });
-    } catch (error) {
-      console.error(
-        'Upstream returned non-JSON response, falling back to SSE',
-        error,
+      const isJsonResponse = /(^|\b)(application\/json|\+json)(\b|$)/i.test(
+        upstreamContentType,
       );
-      const stream = new ReadableStream<Uint8Array>({
-        start(controller) {
-          controller.enqueue(
-            formatSSE('message', JSON.stringify({ content: text })),
-          );
-          controller.enqueue(formatSSE('done'));
-          controller.close();
-        },
-      });
-      return new NextResponse(stream, {
-        headers: {
-          'content-type': 'text/event-stream',
-          'cache-control': 'no-cache',
-          connection: 'keep-alive',
-        },
+      if (isJsonResponse) {
+        const json = JSON.parse(text);
+        return NextResponse.json(json, { status: upstreamResponse.status });
+      }
+      throw new Error('Non-JSON response');
+    } catch (error) {
+      console.warn('Returning plain text response from upstream', error);
+      const headers = new Headers();
+      headers.set(
+        'content-type',
+        upstreamContentType || 'text/plain; charset=utf-8',
+      );
+      return new NextResponse(text, {
+        status: upstreamResponse.status,
+        headers,
       });
     }
   } catch (error) {

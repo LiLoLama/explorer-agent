@@ -44,7 +44,11 @@ export function Composer({
   const audioChunksRef = React.useRef<Blob[]>([]);
   const audioElementRef = React.useRef<HTMLAudioElement | null>(null);
 
-  const canRecord = React.useMemo(() => isRecordingSupported(), []);
+  const [canRecord, setCanRecord] = React.useState(false);
+
+  React.useEffect(() => {
+    setCanRecord(isRecordingSupported());
+  }, []);
 
   React.useEffect(() => {
     return () => {
