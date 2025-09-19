@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { MoreHorizontal, Plus, Upload, Download, Search } from 'lucide-react';
 
 import { useChatStore } from '@/lib/state';
@@ -23,6 +24,8 @@ import {
 } from '@/components/ui/command';
 import { useToast } from '@/components/ui/use-toast';
 import type { ConversationSummary } from '@/lib/types';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import { cn } from '@/lib/utils';
 
 interface ConversationListProps {
   onConversationSelected?: (id: string) => void;
@@ -149,60 +152,73 @@ export function ConversationList({
   };
 
   return (
-    <div className="flex h-full flex-col gap-4 p-4">
-      <div className="flex items-center gap-2">
-        <Button
-          className="flex-1"
-          onClick={() => void handleCreate()}
-          aria-label="New conversation"
-        >
-          <Plus className="mr-2 h-4 w-4" /> New
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => void handleExport()}
-          aria-label="Export conversations"
-        >
-          <Download className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => fileInputRef.current?.click()}
-          aria-label="Import conversations"
-        >
-          <Upload className="h-4 w-4" />
-        </Button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="application/json"
-          className="hidden"
-          onChange={handleImport}
-          aria-hidden
-        />
-      </div>
-      <Button
-        variant="secondary"
-        className="justify-start"
-        onClick={() => setCommandOpen(true)}
-        aria-label="Search conversations"
-      >
-        <Search className="mr-2 h-4 w-4" /> Search (Ctrl/Cmd + K)
-      </Button>
-      <ScrollArea className="flex-1">
-        <div className="space-y-1">
+    <div className="h-full p-4">
+      <div className="flex h-full flex-col gap-4 rounded-2xl border border-black/5 bg-white/80 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
+        <div className="flex items-center justify-between rounded-2xl border border-black/5 bg-black/5 px-3 py-2 text-sm text-[var(--text)]/80 dark:border-white/10 dark:bg-white/[0.08] dark:text-white/80">
+          <div className="flex items-center gap-2">
+            <Image src="/favicon.svg" alt="AITI" width={24} height={24} className="h-6 w-6" />
+            <span className="font-medium">AI Training Institute</span>
+          </div>
+          <ThemeToggle />
+        </div>
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => void handleCreate()}
+            aria-label="New conversation"
+            className="aiti-gradient flex items-center justify-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium text-white shadow-soft transition hover:opacity-90 focus:outline-none focus-visible:ring-2"
+          >
+            <Plus className="h-4 w-4" /> Neu
+          </button>
+          <div className="flex items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={() => void handleExport()}
+              aria-label="Export conversations"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:border-white/10 dark:text-white/70 dark:hover:text-white"
+            >
+              <Download className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              aria-label="Import conversations"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-[var(--text)]/70 transition hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:border-white/10 dark:text-white/70 dark:hover:text-white"
+            >
+              <Upload className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setCommandOpen(true)}
+              aria-label="Search conversations"
+              className="surface flex flex-1 items-center gap-2 rounded-2xl border border-black/10 px-3 py-2 text-sm text-[var(--text)]/70 transition hover:border-black/20 hover:text-[var(--text)] focus:outline-none focus-visible:ring-2 dark:border-white/10 dark:text-white/70 dark:hover:border-white/20 dark:hover:text-white"
+            >
+              <Search className="h-4 w-4" /> Suche (Ctrl/Cmd + K)
+            </button>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            className="hidden"
+            onChange={handleImport}
+            aria-hidden
+          />
+        </div>
+        <ScrollArea className="flex-1">
+          <div className="space-y-2">
           {conversations.map((conversation) => {
             const isActive = conversation.id === activeConversationId;
             const isEditing = editingId === conversation.id;
             return (
               <div
                 key={conversation.id}
-                className={
-                  'group flex items-center justify-between rounded-md border border-transparent px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground' +
-                  (isActive ? ' bg-accent text-accent-foreground' : '')
-                }
+                className={cn(
+                  'group flex items-center justify-between gap-2 rounded-2xl px-3 py-2 text-sm transition',
+                  isActive
+                    ? 'aiti-gradient text-white shadow'
+                    : 'border border-black/10 bg-white/70 text-[var(--text)]/80 hover:border-black/20 hover:text-[var(--text)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70 dark:hover:bg-white/[0.08] dark:hover:text-white',
+                )}
               >
                 {isEditing ? (
                   <form
@@ -216,17 +232,21 @@ export function ConversationList({
                       value={newTitle}
                       onChange={(event) => setNewTitle(event.target.value)}
                       autoFocus
-                      className="h-8"
+                      className="h-9 rounded-2xl border-black/10 bg-white/80 text-sm text-[var(--text)] focus-visible:ring-2 dark:border-white/10 dark:bg-white/[0.05] dark:text-white"
                     />
-                    <Button type="submit" size="sm" variant="secondary">
-                      Save
+                    <Button
+                      type="submit"
+                      size="sm"
+                      className="aiti-gradient rounded-2xl px-3 py-2 text-xs text-white shadow-soft hover:opacity-90"
+                    >
+                      Speichern
                     </Button>
                   </form>
                 ) : (
                   <button
                     type="button"
                     onClick={() => void handleSelect(conversation)}
-                    className="flex flex-1 items-center gap-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="flex flex-1 items-center gap-2 text-left font-medium text-current outline-none focus-visible:ring-2"
                   >
                     <span
                       className="flex-1 truncate"
@@ -238,13 +258,13 @@ export function ConversationList({
                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
+                    <button
+                      type="button"
                       aria-label="Conversation options"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent text-current/80 transition hover:text-current focus:outline-none focus-visible:ring-2"
                     >
                       <MoreHorizontal className="h-4 w-4" />
-                    </Button>
+                    </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
@@ -288,5 +308,6 @@ export function ConversationList({
         </CommandList>
       </CommandDialog>
     </div>
+  </div>
   );
 }

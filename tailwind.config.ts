@@ -4,7 +4,7 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import tailwindcssAnimate from 'tailwindcss-animate';
 
 const config: Config = {
-  darkMode: 'class',
+  darkMode: ['class'] as unknown as Config['darkMode'],
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -15,7 +15,7 @@ const config: Config = {
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        ring: 'hsl(var(--ring-hsl))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
@@ -37,6 +37,10 @@ const config: Config = {
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
+          blue: '#0A84FF',
+          green: '#34C759',
+          orange: '#FF9F0A',
+          red: '#FF453A',
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
@@ -46,14 +50,39 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        aiti: {
+          gold: {
+            50: '#FFF8D6',
+            100: '#F9E33C',
+            200: '#F7E433',
+            300: '#F5CD39',
+            400: '#F9BE3B',
+            500: '#ECAF3B',
+            600: '#C59C3E',
+          },
+        },
+        neu: {
+          0: '#FFFFFF',
+          50: '#F6F7F8',
+          100: '#EEF0F2',
+          200: '#E4E7EB',
+          700: '#2C2F33',
+          800: '#1F2226',
+          900: '#121418',
+        },
       },
       borderRadius: {
+        '2xl': '1.25rem',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
+      },
+      boxShadow: {
+        soft: '0 2px 20px rgba(0,0,0,0.25)',
+        pill: '0 1px 12px rgba(0,0,0,0.35)',
       },
       keyframes: {
         'accordion-down': {

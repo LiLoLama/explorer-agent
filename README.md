@@ -41,7 +41,7 @@ A Next.js 14 chat interface that speaks to configurable webhooks (e.g. n8n workf
 - **Local persistence** via IndexedDB (conversations/messages) and export/import as JSON
 - **Audio messages** recorded in-browser and proxied as `multipart/form-data`
 - **Settings** for per-user webhook override, extra headers, and streaming toggle
-- **Secure proxy** with domain allowlist, header filtering, rate limiting, body limits and timeouts
+- **Secure proxy** with URL validation, header filtering, rate limiting, body limits and timeouts
 
 ## Getting Started
 
@@ -65,14 +65,11 @@ Create a `.env.local` based on `.env.example`:
 
 ```
 N8N_DEFAULT_WEBHOOK_URL=https://hooks.n8n.cloud/your-flow
-WEBHOOK_ALLOWLIST=hooks.n8n.cloud,example.com
 MAX_REQUEST_BYTES=5000000
 REQUEST_TIMEOUT_MS=30000
 NEXT_PUBLIC_APP_NAME=Explorer Agent
 NEXT_PUBLIC_APP_VERSION=0.1.0
 ```
-
-`WEBHOOK_ALLOWLIST` must include every domain you plan to contact (including ports if applicable).
 
 ### Commands
 
@@ -131,7 +128,7 @@ return [
 
 ## Security
 
-- **Allowlist enforcement** – only domains in `WEBHOOK_ALLOWLIST` are reachable.
+- **URL validation** – outbound webhook URLs must be syntactically valid.
 - **Header filtering** – only `X-API-KEY`, `X-WORKFLOW-ID`, `X-SESSION-ID`, `X-CLIENT-ID`, `X-REQUEST-ID` are forwarded.
 - **Rate limiting** – token bucket (60 req/min/IP) on proxy routes.
 - **Body limits** – rejects bodies over 5 MB and audio files exceeding the limit.

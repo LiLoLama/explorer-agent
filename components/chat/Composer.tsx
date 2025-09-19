@@ -149,16 +149,18 @@ export function Composer({
   );
 
   return (
-    <div className="space-y-2 border-t bg-background p-4">
-      <Textarea
-        value={message}
-        onChange={(event) => setMessage(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Type your message..."
-        aria-label="Message"
-        disabled={Boolean(disabled || isStreaming)}
-      />
-      <div className="flex flex-wrap items-center justify-between gap-2">
+    <div className="border-t border-white/5 bg-transparent p-4 dark:border-white/10">
+      <div className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-pill focus-within:ring-2 focus-within:[--tw-ring-color:var(--ring)] dark:border-white/10 dark:bg-white/[0.04]">
+        <Textarea
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message..."
+          aria-label="Message"
+          disabled={Boolean(disabled || isStreaming)}
+          className="min-h-[120px] rounded-2xl border-none bg-transparent text-[var(--text)] placeholder:text-[var(--muted)] focus-visible:ring-0"
+        />
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Button
             type="button"
@@ -223,6 +225,7 @@ export function Composer({
             )}{' '}
             Send
           </Button>
+        </div>
         </div>
       </div>
     </div>
