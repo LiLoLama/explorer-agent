@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "check": "npm run lint && npm run typecheck && npm run format",
     "postinstall": "node scripts/postinstall.mjs"
   },
